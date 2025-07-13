@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <title>Bloco de Notas Online</title>
+  <meta charset="UTF-8">
+  <title>Bloco de Notas</title>
   <style>
     body {
       background-color: #1e1e1e;
@@ -42,9 +42,9 @@
     }
   </style>
 
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
+  <!-- Firebase SDK versão 8 -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
 <body>
 
@@ -59,7 +59,7 @@
   <p id="mensagem"></p>
 
   <script>
-    // 1. Configurar o Firebase
+    // Configuração do Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyARzWLhY9PMD_VbGe3h9n3nuOmZdyVHd-g",
       authDomain: "site-8f901.firebaseapp.com",
@@ -69,11 +69,11 @@
       appId: "1:161845373213:web:47c18cd9b67bc54a0059f4"
     };
 
-    // 2. Inicializar o Firebase
-    const app = firebase.initializeApp(firebaseConfig);
+    // Inicializar Firebase
+    firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // 3. Carregar anotação ao entrar na página
+    // Carregar anotação ao abrir
     window.onload = async function () {
       const doc = await db.collection("anotacoes").doc("padrao").get();
       if (doc.exists) {
@@ -82,7 +82,7 @@
       }
     };
 
-    // 4. Salvar no Firebase
+    // Salvar no Firebase
     function salvar() {
       const texto = document.getElementById("anotacao").value;
       db.collection("anotacoes").doc("padrao").set({ texto })
@@ -91,7 +91,7 @@
         });
     }
 
-    // 5. Limpar do Firebase
+    // Limpar do Firebase
     function limpar() {
       document.getElementById("anotacao").value = "";
       db.collection("anotacoes").doc("padrao").delete()
