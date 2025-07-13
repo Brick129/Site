@@ -1,51 +1,103 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <title>Bloco de Notas</title>
+  <meta charset="UTF-8" />
+  <title>Bloco de Notas Online</title>
   <style>
-  .paragrafo {
-    color: darkred;
-  }
+    body {
+      background-color: #1e1e1e;
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+
     textarea {
-      width: 50%;
-      height: 50px;
+      width: 80%;
+      height: 100px;
+      background-color: #333;
+      color: white;
+      border: 1px solid #555;
+      padding: 10px;
+      resize: vertical;
+    }
+
+    button {
+      background-color: darkred;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #a00000;
+    }
+
+    #mensagem {
+      margin-top: 10px;
+      color: limegreen;
     }
   </style>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
 </head>
 <body>
 
-  <h2> Lore </h2>
+  <h2>Lore</h2>
 
   <textarea id="anotacao" placeholder="Escreva algo..."></textarea><br><br>
 
   <button onclick="salvar()">Salvar</button>
   <button onclick="limpar()">Limpar</button>
-<a href="Carmesim.html">
-  <button>  Voltar  </button>
-</a>
+  <a href="Carmesim.html"><button>Voltar</button></a>
+
   <p id="mensagem"></p>
 
   <script>
-    // Quando a página carrega, mostra o que já estava salvo
-    window.onload = function() {
-      const textoSalvo = localStorage.getItem("anotacao");
-      if (textoSalvo) {
-        document.getElementById("anotacao").value = textoSalvo;
-        document.getElementById("mensagem").textContent = "Anotação carregada!";
-      }
-    }
+    // 1. Configurar o Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyARzWLhY9PMD_VbGe3h9n3nuOmZdyVHd-g",
+      authDomain: "site-8f901.firebaseapp.com",
+      projectId: "site-8f901",
+      storageBucket: "site-8f901.firebasestorage.app",
+      messagingSenderId: "161845373213",
+      appId: "1:161845373213:web:47c18cd9b67bc54a0059f4"
+    };
 
+    // 2. Inicializar o Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // 3. Carregar anotação ao entrar na página
+    window.onload = async function () {
+      const doc = await db.collection("anotacoes").doc("padrao").get();
+      if (doc.exists) {
+        document.getElementById("anotacao").value = doc.data().texto || "";
+        document.getElementById("mensagem").textContent = "Anotação carregada do Firebase!";
+      }
+    };
+
+    // 4. Salvar no Firebase
     function salvar() {
       const texto = document.getElementById("anotacao").value;
-      localStorage.setItem("anotacao", texto);
-      document.getElementById("mensagem").textContent = "Anotação salva!";
+      db.collection("anotacoes").doc("padrao").set({ texto })
+        .then(() => {
+          document.getElementById("mensagem").textContent = "Anotação salva no Firebase!";
+        });
     }
 
+    // 5. Limpar do Firebase
     function limpar() {
       document.getElementById("anotacao").value = "";
-      localStorage.removeItem("anotacao");
-      document.getElementById("mensagem").textContent = "Anotação apagada!";
+      db.collection("anotacoes").doc("padrao").delete()
+        .then(() => {
+          document.getElementById("mensagem").textContent = "Anotação apagada!";
+        });
     }
   </script>
 
