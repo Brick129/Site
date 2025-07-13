@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Bloco de Notas</title>
+  <style>
+    textarea {
+      width: 100%;
+      height: 200px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2> Lore </h2>
+
+  <textarea id="anotacao" placeholder="Escreva algo..."></textarea><br><br>
+
+  <button onclick="salvar()">Salvar</button>
+  <button onclick="limpar()">Limpar</button>
+<a href="Carmesim.html">
+  <button>  Voltar  </button>
+</a>
+  <p id="mensagem"></p>
+
+  <script>
+    // Quando a página carrega, mostra o que já estava salvo
+    window.onload = function() {
+      const textoSalvo = localStorage.getItem("anotacao");
+      if (textoSalvo) {
+        document.getElementById("anotacao").value = textoSalvo;
+        document.getElementById("mensagem").textContent = "Anotação carregada!";
+      }
+    }
+
+    function salvar() {
+      const texto = document.getElementById("anotacao").value;
+      localStorage.setItem("anotacao", texto);
+      document.getElementById("mensagem").textContent = "Anotação salva!";
+    }
+
+    function limpar() {
+      document.getElementById("anotacao").value = "";
+      localStorage.removeItem("anotacao");
+      document.getElementById("mensagem").textContent = "Anotação apagada!";
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista do Mod</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    li {
+      margin: 10px 0;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>Lista do mod</h2>
+
+  <ul>
+    <li>
+      <input type="checkbox" id="tarefa1">
+      <label for="tarefa1">Fazer as Roupas dos Rangers</label>
+    </li>
+    <li>
+      <input type="checkbox" id="tarefa2">
+      <label for="tarefa2">Fazer as Armas</label>
+    </li>
+    <li>
+      <input type="checkbox" id="tarefa3">
+      <label for="tarefa3">Fazer 3 Mobs</label>
+    </li>
+    <li>
+      <input type="checkbox" id="tarefa4">
+      <label for="tarefa4">Fazer 2 Estruturas</label>
+    </li>
+    <li>
+      <input type="checkbox" id="tarefa5">
+      <label for="tarefa5">Planejar a História</label>
+    </li>
+    <li>
+      <input type="checkbox" id="tarefa6">
+      <label for="tarefa6">Melhorar a Transformação</label>
+    </li>
+    <li>
+      <input type="checkbox" id="tarefa7">
+      <label for="tarefa7">Criar 10 Blocos</label>
+    </li>
+    <li>
+      <input type="checkbox" id="tarefa8">
+      <label for="tarefa8">Criar 14 itens</label>
+    </li>
+  </ul>
+
+  <a href="Pagina.html">
+    <button>Voltar</button>
+  </a>
+
+  <script>
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+    // Carrega os valores salvos
+    checkboxes.forEach((checkbox, index) => {
+      const salvo = localStorage.getItem("mod_tarefa_" + index);
+      checkbox.checked = salvo === "true";
+    });
+
+    // Salva sempre que uma caixa for marcada/desmarcada
+    checkboxes.forEach((checkbox, index) => {
+      checkbox.addEventListener("change", () => {
+        localStorage.setItem("mod_tarefa_" + index, checkbox.checked);
+      });
+    });
+  </script>
+</body>
+</html>
