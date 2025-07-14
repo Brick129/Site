@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Verificar nome e senha</title>
+</head>
+<body>
+    <label for="Lembrar"> Lembrar </label>
+    <input type="text" id="Lembrar" placeholder="O que tu quer Lembrar?"><br><br>
+
+    <button onclick="verificarNome()">Verificar</button>
+
+    <p id="resultado"></p>
+    <div id="botoesAqui"></div>
+
+<script>
+    function verificarNome() {
+      let nomeDigitado = document.getElementById("Lembrar").value.trim();
+      let resultado = document.getElementById("resultado");
+      let botoesDiv = document.getElementById("botoesAqui");
+
+      // Limpa o conteúdo anterior
+      resultado.textContent = "";
+      botoesDiv.innerHTML = "";
+
+    if (nomeDigitado === "html") {
+  resultado.innerHTML = "head:é a parte de cima do site<br>body: é o corpo oq fica dentro do site";
+}
+
+    
+        let botao = document.createElement("button");
+        botao.textContent = "Echos of the Grid";
+        botao.onclick = function () {
+          window.location.href = "Pagina.html";
+        };
+        botoesDiv.appendChild(botao);
+      }
+</script>
+
+</body>

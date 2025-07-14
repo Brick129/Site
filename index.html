@@ -6,17 +6,22 @@
 </head>
 <body>
 
-  <label for="Nome">Digite seu nome:</label>
-  <input type="text" id="Nome" placeholder="Escreva seu nome"><br><br>
+  <style>
+  label, input, button, #resultado {
+    font-size: 20px; /* aumenta o tamanho da letra */
+  }
+</style>
 
-  <label for="Senha">Digite sua senha:</label>
-  <input type="password" id="Senha" placeholder="Digite sua senha"><br><br>
+<label for="Nome">Digite seu nome:</label>
+<input type="text" id="Nome" placeholder="Escreva seu nome"><br><br>
 
-  <button onclick="verificarNome()">Verificar</button>
+<label for="Senha">Digite sua senha:</label>
+<input type="password" id="Senha" placeholder="Digite sua senha"><br><br>
 
-  <p id="resultado"></p>
-  <div id="botoesAqui"></div>
+<button onclick="verificarNome()">Verificar</button>
 
+<p id="resultado"></p>
+<div id="botoesAqui"></div>
   <script>
     function verificarNome() {
       let nomeDigitado = document.getElementById("Nome").value.trim();
@@ -45,6 +50,16 @@
         botao.textContent = "C.A.R.M.E.S.I.M";
         botao.onclick = function () {
           window.location.href = "Carmesim.html";
+        };
+        botoesDiv.appendChild(botao);
+      }
+       else if (nomeDigitado === "Quiro" && senhaDigitada === "9959") {
+        resultado.textContent = "Bem-vindo, Ryan Clique no botão abaixo";
+
+        let botao = document.createElement("button");
+        botao.textContent = "Clique-me";
+        botao.onclick = function () {
+          window.location.href = "Quiro.html";
         };
         botoesDiv.appendChild(botao);
       }
