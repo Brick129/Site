@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mini RPG com JSON</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: #eee;
+      padding: 20px;
+    }
+    #historia {
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+    .botao {
+      margin: 5px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #333;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .botao:hover {
+      background-color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>RPG: Ecos da Grade</h1>
+  <div id="historia">...</div>
+  <div id="opcoes"></div>
+
+  <script>
+    const historia = {
+      inicio: {
+        texto: "Você acorda em uma floresta misteriosa. O que deseja fazer?",
+        opcoes: [
+          { texto: "Explorar", destino: "templo" },
+          { texto: "Dormir", destino: "ataque" }
+        ]
+      },
+      templo: {
+        texto: "Você encontra um templo antigo. Deseja entrar ou ignorar?",
+        opcoes: [
+          { texto: "Entrar", destino: "espada" },
+          { texto: "Ignorar", destino: "buraco" }
+        ]
+      },
+      ataque: {
+        texto: "Você adormece e é atacado por monstros à noite. Fim de jogo.",
+        opcoes: [
+          { texto: "Recomeçar", destino: "inicio" }
+        ]
+      },
+      buraco: {
+        texto: "Você segue andando e cai num buraco. Fim de jogo.",
+        opcoes: [
+          { texto: "Recomeçar", destino: "inicio" }
+        ]
+      },
+      espada: {
+        texto: "Dentro do templo você acha uma espada sagrada. Um monstro aparece!",
+        opcoes: [
+          { texto: "Lutar", destino: "vitoria" },
+          { texto: "Fugir", destino: "fuga" }
+        ]
+      },
+      vitoria: {
+        texto: "Você derrota o monstro e se torna uma lenda! Fim.",
+        opcoes: [
+          { texto: "Jogar novamente", destino: "inicio" }
+        ]
+      },
+      fuga: {
+        texto: "Você foge, mas perde a espada. Ao menos está vivo. Fim.",
+        opcoes: [
+          { texto: "Tentar de novo", destino: "inicio" }
+        ]
+      }
+    };
+
+    function mostrarCena(nomeCena) {
+      const cena = historia[nomeCena];
+      const historiaDiv = document.getElementById("historia");
+      const opcoesDiv = document.getElementById("opcoes");
+
+      historiaDiv.textContent = cena.texto;
+      opcoesDiv.innerHTML = "";
+
+      cena.opcoes.forEach(opcao => {
+        const botao = document.createElement("button");
+        botao.textContent = opcao.texto;
+        botao.className = "botao";
+        botao.onclick = () => mostrarCena(opcao.destino);
+        opcoesDiv.appendChild(botao);
+      });
+    }
+
+    mostrarCena("inicio"); // Começa o jogo
+  </script>
+
+</body>
+</html>

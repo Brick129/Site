@@ -63,6 +63,17 @@
         };
         botoesDiv.appendChild(botao);
       }
+       else if (nomeDigitado === "Jogo" && senhaDigitada === "RPG") {
+        resultado.textContent = "Bem-vindo, Jogador Clique no botão abaixo";
+
+        let botao = document.createElement("button");
+        botao.textContent = "Clique-me";
+        botao.onclick = function () {
+          window.location.href = "rpg.html";
+        };
+        botoesDiv.appendChild(botao);
+      }
+      
       else {
         resultado.textContent = "Nome ou senha incorretos.";
       }
