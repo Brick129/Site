@@ -2,37 +2,77 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <title>Mini RPG com JSON</title>
+  <title>Mini RPG com Efeitos Suaves</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #111;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 18px;
+      max-width: 600px;
+      margin: 30px auto;
+      background: linear-gradient(-45deg, #1a1a1a, #222, #111, #1a1a1a);
+      background-size: 400% 400%;
+      animation: bgmove 10s ease infinite;
       color: #eee;
       padding: 20px;
+      box-sizing: border-box;
     }
+
+    @keyframes bgmove {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
     #historia {
+      background-color: #222;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px #0008;
+      min-height: 100px;
       margin-bottom: 20px;
-      font-size: 18px;
+      transition: opacity 0.3s ease;
     }
+
+    #opcoes {
+      border-top: 1px solid #444;
+      padding-top: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
     .botao {
-      margin: 5px;
-      padding: 10px 20px;
+      opacity: 0;
+      padding: 12px 25px;
       font-size: 16px;
-      background-color: #333;
+      background-color: #444;
       color: white;
       border: none;
+      border-radius: 6px;
       cursor: pointer;
+      transition: opacity 0.3s ease, background-color 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 4px 6px #0006;
     }
+
     .botao:hover {
-      background-color: #555;
+      background-color: #666;
+      transform: scale(1.05);
+    }
+
+    .botao.fade-in {
+      opacity: 1;
     }
   </style>
 </head>
 <body>
 
   <h1>RPG: Ecos da Grade</h1>
-  <div id="historia">...</div>
+  <div id="historia"></div>
   <div id="opcoes"></div>
+
+  <!-- Som de clique -->
+  <audio id="somClique" src="click.mp3" preload="auto"></audio>
 
   <script>
     const historia = {
@@ -65,16 +105,33 @@
       espada: {
         texto: "Dentro do templo você acha uma espada sagrada. Um monstro aparece!",
         opcoes: [
-          { texto: "Lutar", destino: "vitoria" },
+          { texto: "Lutar", destino: "chanceAtaque" },
           { texto: "Fugir", destino: "fuga" }
         ]
       },
+      chanceAtaque: { texto: "", opcoes: [] },
       vitoria: {
-        texto: "Você derrota o monstro e se torna uma lenda! Fim.",
+        texto: "Você derrota o monstro e encontra um porão.",
         opcoes: [
-          { texto: "Jogar novamente", destino: "inicio" }
+          { texto: "Entrar no porão", destino: "entrarNoPorao" }
         ]
       },
+      entrarNoPorao: {
+        texto: "Você desce a escada e encontra uma porta com barulhos estranhos.",
+        opcoes: [
+          { texto: "Abrir a porta", destino: "porao" },
+          { texto: "Correr", destino: "inicio" }
+        ]
+      },
+      porao: {
+        texto: "Você encontra um homem mexendo com magia.",
+        opcoes: [
+          { texto: "Atacá-lo", destino: "chanceAtaqueMago" },
+          { texto: "Conversar", destino: "inicio" },
+          { texto: "Fechar a porta e correr", destino: "inicio" }
+        ]
+      },
+      chanceAtaqueMago: { texto: "", opcoes: [] },
       fuga: {
         texto: "Você foge, mas perde a espada. Ao menos está vivo. Fim.",
         opcoes: [
@@ -83,24 +140,72 @@
       }
     };
 
+    const somClique = document.getElementById("somClique");
+
+    function tocarSom() {
+      somClique.currentTime = 0;
+      somClique.play();
+    }
+
+    function digitarTexto(elemento, texto, callback) {
+      elemento.textContent = "";
+      let i = 0;
+      function escrever() {
+        if (i < texto.length) {
+          elemento.textContent += texto.charAt(i);
+          i++;
+          setTimeout(escrever, 20);
+        } else {
+          if (callback) callback();
+        }
+      }
+      escrever();
+    }
+
     function mostrarCena(nomeCena) {
-      const cena = historia[nomeCena];
       const historiaDiv = document.getElementById("historia");
       const opcoesDiv = document.getElementById("opcoes");
 
-      historiaDiv.textContent = cena.texto;
       opcoesDiv.innerHTML = "";
 
-      cena.opcoes.forEach(opcao => {
-        const botao = document.createElement("button");
-        botao.textContent = opcao.texto;
-        botao.className = "botao";
-        botao.onclick = () => mostrarCena(opcao.destino);
-        opcoesDiv.appendChild(botao);
+      // Eventos com chance
+      if (nomeCena === "chanceAtaque" || nomeCena === "chanceAtaqueMago") {
+        const morreu = Math.random() < 0.5;
+        const texto = (nomeCena === "chanceAtaque")
+          ? (morreu ? "Você tentou atacar, mas o monstro te derrotou. Fim." : "Você conseguiu ferir o monstro e ele fugiu!")
+          : (morreu ? "Você atacou o mago, mas ele te lançou uma maldição mortal. Fim." : "Você derrotou o mago e ganhou um poder mágico!");
+
+        const destino = morreu ? "inicio" : (nomeCena === "chanceAtaque" ? "vitoria" : "inicio");
+
+        digitarTexto(historiaDiv, texto, () => {
+          const botao = document.createElement("button");
+          botao.textContent = morreu ? "Recomeçar" : "Continuar";
+          botao.className = "botao fade-in";
+          botao.onclick = () => {
+            tocarSom();
+            mostrarCena(destino);
+          };
+          opcoesDiv.appendChild(botao);
+        });
+        return;
+      }
+
+      const cena = historia[nomeCena];
+      digitarTexto(historiaDiv, cena.texto, () => {
+        cena.opcoes.forEach(opcao => {
+          const botao = document.createElement("button");
+          botao.textContent = opcao.texto;
+          botao.className = "botao fade-in";
+          botao.onclick = () => {
+            tocarSom();
+            mostrarCena(opcao.destino);
+          };
+          opcoesDiv.appendChild(botao);
+        });
       });
     }
 
-    mostrarCena("inicio"); // Começa o jogo
+    mostrarCena("inicio");
   </script>
 
 </body>
