@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <title>Mini RPG com Efeitos Suaves</title>
+  <title>Slice of Life  </title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -76,68 +76,45 @@
 
   <script>
     const historia = {
+  // Sonho //
       inicio: {
-        texto: "Você acorda em uma floresta misteriosa. O que deseja fazer?",
+        texto: "Você abre os olhos, e está em um quarto todo preto, vc olha em volta e você acha uma foto no chão.",
         opcoes: [
-          { texto: "Explorar", destino: "templo" },
-          { texto: "Dormir", destino: "ataque" }
+          { texto: "Pegar foto", destino: "Foto1" },
+          { texto: "Andar por ai", destino: "Andarsonho1" }
         ]
       },
-      templo: {
-        texto: "Você encontra um templo antigo. Deseja entrar ou ignorar?",
+
+
+      Foto1: {
+        texto: "Você pega a foto e vê uma foto da sua turma, mas com os rostos com 1 X vermelho, menos o seu.",
         opcoes: [
-          { texto: "Entrar", destino: "espada" },
-          { texto: "Ignorar", destino: "buraco" }
+          { texto: "...", destino: "Foto2" },
         ]
       },
-      ataque: {
-        texto: "Você adormece e é atacado por monstros à noite. Fim de jogo.",
+
+
+      Foto2: {
+        texto: "Você não entende e fica em choque tentando entender, então você acorda.",
         opcoes: [
-          { texto: "Recomeçar", destino: "inicio" }
+          { texto: ">>>", destino: "Acordado1" }
         ]
       },
-      buraco: {
-        texto: "Você segue andando e cai num buraco. Fim de jogo.",
+      
+      Andarsonho1: {
+        texto: "Você anda e anda, mas não acha nada.",
         opcoes: [
-          { texto: "Recomeçar", destino: "inicio" }
+         { texto: "Voltar", destino: "inicio2"}
         ]
       },
-      espada: {
-        texto: "Dentro do templo você acha uma espada sagrada. Um monstro aparece!",
+
+      inicio2: {
+        texto: "Você voltou para onde você veio",
         opcoes: [
-          { texto: "Lutar", destino: "chanceAtaque" },
-          { texto: "Fugir", destino: "fuga" }
+          {texto: "Pegar foto", destino: "Foto1"}
         ]
       },
-      chanceAtaque: { texto: "", opcoes: [] },
-      vitoria: {
-        texto: "Você derrota o monstro e encontra um porão.",
-        opcoes: [
-          { texto: "Entrar no porão", destino: "entrarNoPorao" }
-        ]
-      },
-      entrarNoPorao: {
-        texto: "Você desce a escada e encontra uma porta com barulhos estranhos.",
-        opcoes: [
-          { texto: "Abrir a porta", destino: "porao" },
-          { texto: "Correr", destino: "inicio" }
-        ]
-      },
-      porao: {
-        texto: "Você encontra um homem mexendo com magia.",
-        opcoes: [
-          { texto: "Atacá-lo", destino: "chanceAtaqueMago" },
-          { texto: "Conversar", destino: "inicio" },
-          { texto: "Fechar a porta e correr", destino: "inicio" }
-        ]
-      },
-      chanceAtaqueMago: { texto: "", opcoes: [] },
-      fuga: {
-        texto: "Você foge, mas perde a espada. Ao menos está vivo. Fim.",
-        opcoes: [
-          { texto: "Tentar de novo", destino: "inicio" }
-        ]
-      }
+
     };
 
     const somClique = document.getElementById("somClique");
